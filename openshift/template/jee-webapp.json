@@ -87,7 +87,7 @@
               },
               {
                 "name": "HTTP_PROXY_PORT",
-                "value": "${HTTP_PROXY_PORT}"
+                "value": ${HTTP_PROXY_PORT}
               }
             ],
             "incremental": true
@@ -178,7 +178,7 @@
                   },
                   {
                     "name": "MYSQL_SERVICE_PORT",
-                    "value": "${MYSQL_SERVICE_PORT}"
+                    "value": ${MYSQL_SERVICE_PORT}
                   },
                   {
                     "name": "MYSQL_USER",
@@ -206,7 +206,7 @@
 	  "displayName": "Name",
 	  "description": "The name assigned to all of the frontend objects defined in this template.",
       "required": true,
-      "value": "webapp-example"
+      "value": "jee-webapp"
 	},
 	{
       "name": "APPLICATION_DOMAIN",
@@ -226,8 +226,7 @@
       "name": "MYSQL_USER",
       "description": "database username",
       "generate": "expression",
-      "from": "user[A-Z0-9]{3}",
-	  "value": "beo"
+      "from": "user[A-Z0-9]{3}"
     },
     {
       "name": "MYSQL_PASSWORD",
