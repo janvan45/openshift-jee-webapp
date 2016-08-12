@@ -17,7 +17,7 @@
 git clone https://github.com/anhnguyenbk/openshift-jee-webapp.git
 
 oc new-app -f openshift-jee-webapp/openshift/template/jee-webapp.json \
--p HTTP_PROXY_HOST=<proxy_host> HTTP_PROXY_PORT=<proxy_port> \
-   MYSQL_SERVICE_HOST=<mysql_host> MYSQL_SERVICE_PORT=<mysql_port>\
-   MYSQL_USER=<username> MYSQL_PASSWORD=<password> MYSQL_DATABASE=<database>
+-p HTTP_PROXY_HOST=<proxy_host>,HTTP_PROXY_PORT=<proxy_port>,\
+MYSQL_SERVICE_HOST=<mysql_host>,MYSQL_SERVICE_PORT=<mysql_port>,\
+MYSQL_USER=<username>,MYSQL_PASSWORD=<password>,MYSQL_DATABASE=<database>
 ```
