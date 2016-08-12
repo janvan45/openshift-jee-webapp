@@ -69,7 +69,7 @@
         "source": {
           "type": "Git",
           "git": {
-            "uri": "https://gitlab.com/an.nguyen/demo-app.git"
+            "uri": "https://github.com/anhnguyenbk/openshift-jee-webapp.git"
           }
         },
         "strategy": {
