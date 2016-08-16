@@ -12,7 +12,7 @@
 * `MYSQL_PASSWORD`: database password
 * `MYSQL_DATABASE`: database name
 
-###Command
+###Commands
 ```
 git clone https://github.com/anhnguyenbk/openshift-jee-webapp.git
 
