@@ -1,0 +1,244 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "webapp-example",
+    "annotations": {
+      "description": "Builds and deploys a sample JEE app",
+      "iconClass": "icon-jboss",
+      "tags": "instant-app,java,mysql"
+    }
+  },
+  "objects": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}"
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "web",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": 8080,
+            "nodePort": 0
+          }
+        ],
+        "selector": {
+          "name": "${NAME}"
+        }
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+		"description": "Keeps track of changes in the application image"
+      },
+      "spec": {
+        "host": "${APPLICATION_DOMAIN}",
+        "to": {
+          "kind": "Service",
+          "name": "${NAME}"
+        }
+      }
+    },
+    {
+      "kind": "ImageStream",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "annotations": {
+          "description": "Keeps track of changes in the application image"
+        }
+      }
+    },
+    {
+      "kind": "BuildConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}",
+        "annotations": {
+          "description": "Defines how to build the application"
+        }
+      },
+      "spec": {
+        "source": {
+          "type": "Git",
+          "git": {
+            "uri": "https://github.com/anhnguyenbk/openshift-jee-webapp.git"
+          }
+        },
+        "strategy": {
+          "type": "Source",
+          "sourceStrategy": {
+            "from": {
+              "kind": "ImageStreamTag",
+	      "namespace": "openshift",
+	      "name": "wildfly:10.0"
+            },
+            "env": [
+              {
+                "name": "HTTP_PROXY_HOST",
+                "value": "${HTTP_PROXY_HOST}"
+              },
+              {
+                "name": "HTTP_PROXY_PORT",
+                "value": "${HTTP_PROXY_PORT}"
+              }
+            ],
+            "incremental": true
+          }
+        },
+        "output": {
+          "to": {
+            "kind": "ImageStreamTag",
+            "name": "${NAME}:latest"
+          }
+        },
+        "triggers": [
+          {
+            "type": "GitHub",
+            "github": {
+              "secret": "${GITHUB_WEBHOOK_SECRET}"
+            }
+          },
+          {
+            "type": "Generic",
+            "generic": {
+              "secret": "${GENERIC_WEBHOOK_SECRET}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${NAME}"
+      },
+      "spec": {
+        "strategy": {
+          "type": "Rolling"
+        },
+        "triggers": [
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${NAME}"
+        },
+        "template": {
+          "metadata": {
+            "name": "${NAME}",
+            "labels": {
+              "name": "${NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "webapp-example",
+				"image": " ",
+                "ports": [
+                  {
+                    "containerPort": 8080,
+                    "protocol": "TCP"
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "MYSQL_SERVICE_HOST",
+                    "value": "${MYSQL_SERVICE_HOST}"
+                  },
+                  {
+                    "name": "MYSQL_SERVICE_PORT",
+                    "value": "${MYSQL_SERVICE_PORT}"
+                  },
+                  {
+                    "name": "MYSQL_USER",
+                    "value": "${MYSQL_USER}"
+                  },
+                  {
+                    "name": "MYSQL_PASSWORD",
+                    "value": "${MYSQL_PASSWORD}"
+                  },
+                  {
+                    "name": "MYSQL_DATABASE",
+                    "value": "${MYSQL_DATABASE}"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "parameters": [
+	{ 
+	  "name": "NAME",
+	  "displayName": "Name",
+	  "description": "The name assigned to all of the frontend objects defined in this template.",
+      "required": true,
+      "value": "jee-webapp"
+	},
+	{
+      "name": "APPLICATION_DOMAIN",
+      "displayName": "Application Hostname",
+      "description": "The exposed hostname that will route to the webapp, if left blank a value will be defaulted.",
+      "value": ""
+    },
+    {
+      "name": "HTTP_PROXY_HOST",
+      "description": "proxy host for maven"
+    },
+    {
+      "name": "HTTP_PROXY_PORT",
+      "description": "proxy port for maven"
+    },
+    {
+      "name": "MYSQL_USER",
+      "description": "database username",
+      "generate": "expression",
+      "from": "user[A-Z0-9]{3}"
+    },
+    {
+      "name": "MYSQL_PASSWORD",
+      "description": "database password",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{8}"
+    },
+    {
+      "name": "MYSQL_DATABASE",
+      "description": "database name",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{20}"
+    },
+	{
+      "name": "MYSQL_SERVICE_HOST",
+	  "description": "database host"
+    },
+	{
+      "name": "MYSQL_SERVICE_PORT",
+	  "description": "database port"
+    },
+	{
+      "name": "GITHUB_WEBHOOK_SECRET",
+      "displayName": "GitHub Webhook Secret",
+      "description": "A secret string used to configure the GitHub webhook.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{40}"
+    },
+    {
+      "name": "GENERIC_WEBHOOK_SECRET",
+      "displayName": "Generic Webhook Secret",
+      "description": "A secret string used to configure the Generic webhook.",
+      "generate": "expression",
+      "from": "[a-zA-Z0-9]{40}"
+    }
+  ]
+}

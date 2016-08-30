@@ -24,17 +24,16 @@
 				try {
 			
 					input = this.getClass().getClassLoader().getResourceAsStream("/database.properties");
-					
 					prop.load(input);
 					String JDBC_DRIVER = prop.getProperty("db.driver");
 					
-					String DB_URL = "jdbc:mysql://" + System.getenv("MYSQL_SERVICE_HOST") + ":" + System.getenv("MYSQL_SERVICE_PORT") + "/" + System.getenv("MYSQL_DATABASE");
-					String DB_USER = System.getenv("MYSQL_USER");
-					String DB_PASS = System.getenv("MYSQL_PASSWORD");
+					//String DB_URL = "jdbc:mysql://" + System.getenv("MYSQL_SERVICE_HOST") + ":" + System.getenv("MYSQL_SERVICE_PORT") + "/" + System.getenv("MYSQL_DATABASE");
+					//String DB_USER = System.getenv("MYSQL_USER");
+					//String DB_PASS = System.getenv("MYSQL_PASSWORD");
 					
-					//String DB_URL = prop.getProperty("db.url");
-					//String DB_USER = prop.getProperty("db.username");
-					//String DB_PASS = prop.getProperty("db.password");
+					String DB_URL = prop.getProperty("db.url");
+					String DB_USER = prop.getProperty("db.username");
+					String DB_PASS = prop.getProperty("db.password");
 				
 					Connection conn = null;
 					Statement stmt = null;
