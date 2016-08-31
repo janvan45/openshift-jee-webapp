@@ -26,7 +26,7 @@
 					prop.load(input);
 					
 					String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-					String DB_URL="jdbc:oracle:thin:@" + System.getenv("DB_HOST"); + ":" + System.getenv("DB_PORT"); + ":xe";
+					String DB_URL = "jdbc:oracle:thin:@" + System.getenv("DB_HOST") + ":" + System.getenv("DB_PORT") + ":xe";
 					String DB_USER = System.getenv("DB_USER");
 					String DB_PASS = System.getenv("DB_PASSWORD");
 				
