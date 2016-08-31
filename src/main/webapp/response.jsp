@@ -20,20 +20,27 @@
 			<%
 				Properties prop = new Properties();
 				InputStream input = null;
-		
+				
 				try {
 			
 					input = this.getClass().getClassLoader().getResourceAsStream("/database.properties");
 					prop.load(input);
 					String JDBC_DRIVER = prop.getProperty("db.driver");
+					String DB_URL="";
 					
-					//String DB_URL = "jdbc:mysql://" + System.getenv("MYSQL_SERVICE_HOST") + ":" + System.getenv("MYSQL_SERVICE_PORT") + "/" + System.getenv("MYSQL_DATABASE");
-					//String DB_USER = System.getenv("MYSQL_USER");
-					//String DB_PASS = System.getenv("MYSQL_PASSWORD");
+					String DB_HOST = System.getenv("DB_HOST");
+					String DB_PORT = System.getenv("DB_PORT");
+					String DB_USER = System.getenv("DB_USER");
+					String DB_PASS = System.getenv("DB_PASSWORD");
 					
-					String DB_URL = prop.getProperty("db.url");
-					String DB_USER = prop.getProperty("db.username");
-					String DB_PASS = prop.getProperty("db.password");
+					if ( DB_HOST == null || DB_PORT == null || DB_USER == null || DB_PASS == null){
+						DB_HOST = prop.getProperty("db.host");
+						DB_PORT = prop.getProperty("db.port");
+						DB_USER = prop.getProperty("db.username");
+						DB_PASS = prop.getProperty("db.password");
+					}
+					
+					DB_URL = "jdbc:oracle:thin:@" + DB_HOST + ":" + DB_PORT + ":xe";
 				
 					Connection conn = null;
 					Statement stmt = null;
@@ -41,9 +48,11 @@
 					try{
 						Class.forName(JDBC_DRIVER);
 						conn = DriverManager.getConnection(DB_URL,DB_USER,DB_PASS);
+						if (conn != null) {
+							out.println("Connection successful. </br>");
+						}
 						
 						String username = request.getParameter("username");
-						
 						String pwd = request.getParameter("pwd");
 				        MessageDigest m=MessageDigest.getInstance("MD5");
 				        m.update(pwd.getBytes(), 0 , pwd.length());
@@ -55,7 +64,7 @@
 					       stmt = conn.createStatement();
 					       String sql;
 						   sql = "select id, username, lname, fname, password from users where username='" + 
-					       			username + "' and password='" + pwdmd5 + "' limit 1";
+					       			username + "' and password='" + pwdmd5 + "' and ROWNUM <= 1";
 						   
 						   ResultSet rs = stmt.executeQuery(sql);
 						   
@@ -68,13 +77,13 @@
 						   }
 						   rs.close();
 						   
-					   }catch(Exception ex){
-						   out.print("Query failed...</br>");
+					   }catch(SQLException e){
+						   out.print("Queries failed...</br>");
 					   }
 					   
 					   conn.close();
-					}catch(Exception e){
-						out.print("Database connect failed...</br>");
+					}catch(Exception ex){
+						out.print("Connection failed...</br>");
 					}
 					
 					input.close();
