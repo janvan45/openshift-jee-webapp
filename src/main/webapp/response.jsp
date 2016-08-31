@@ -22,25 +22,13 @@
 				InputStream input = null;
 				
 				try {
-			
 					input = this.getClass().getClassLoader().getResourceAsStream("/database.properties");
 					prop.load(input);
-					String JDBC_DRIVER = prop.getProperty("db.driver");
-					String DB_URL="";
 					
-					String DB_HOST = System.getenv("DB_HOST");
-					String DB_PORT = System.getenv("DB_PORT");
+					String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
+					String DB_URL="jdbc:oracle:thin:@" + System.getenv("DB_HOST"); + ":" + System.getenv("DB_PORT"); + ":xe";
 					String DB_USER = System.getenv("DB_USER");
 					String DB_PASS = System.getenv("DB_PASSWORD");
-					
-					if ( DB_HOST == null || DB_PORT == null || DB_USER == null || DB_PASS == null){
-						DB_HOST = prop.getProperty("db.host");
-						DB_PORT = prop.getProperty("db.port");
-						DB_USER = prop.getProperty("db.username");
-						DB_PASS = prop.getProperty("db.password");
-					}
-					
-					DB_URL = "jdbc:oracle:thin:@" + DB_HOST + ":" + DB_PORT + ":xe";
 				
 					Connection conn = null;
 					Statement stmt = null;

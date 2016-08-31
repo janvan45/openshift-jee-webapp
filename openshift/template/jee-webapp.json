@@ -6,7 +6,7 @@
     "annotations": {
       "description": "Builds and deploys a sample JEE app",
       "iconClass": "icon-jboss",
-      "tags": "instant-app,java,mysql"
+      "tags": "instant-app,java,oracle-xe"
     }
   },
   "objects": [
@@ -173,24 +173,20 @@
                 ],
                 "env": [
                   {
-                    "name": "MYSQL_SERVICE_HOST",
-                    "value": "${MYSQL_SERVICE_HOST}"
+                    "name": "DB_HOST",
+                    "value": "${DB_PORT}"
                   },
                   {
-                    "name": "MYSQL_SERVICE_PORT",
-                    "value": "${MYSQL_SERVICE_PORT}"
+                    "name": "DB_PORT",
+                    "value": "${DB_PORT}"
                   },
                   {
-                    "name": "MYSQL_USER",
-                    "value": "${MYSQL_USER}"
+                    "name": "DB_USER",
+                    "value": "${DB_USER}"
                   },
                   {
-                    "name": "MYSQL_PASSWORD",
-                    "value": "${MYSQL_PASSWORD}"
-                  },
-                  {
-                    "name": "MYSQL_DATABASE",
-                    "value": "${MYSQL_DATABASE}"
+                    "name": "DB_PASSWORD",
+                    "value": "${DB_PASSWORD}"
                   }
                 ]
               }
@@ -222,31 +218,25 @@
       "name": "HTTP_PROXY_PORT",
       "description": "proxy port for maven"
     },
-    {
-      "name": "MYSQL_USER",
+	{
+      "name": "DB_HOST",
+	  "description": "database host"
+    },
+	{
+      "name": "DB_PORT",
+	  "description": "database port"
+    },
+	{
+      "name": "DB_USER",
       "description": "database username",
       "generate": "expression",
       "from": "user[A-Z0-9]{3}"
     },
     {
-      "name": "MYSQL_PASSWORD",
+      "name": "DB_PASSWORD",
       "description": "database password",
       "generate": "expression",
       "from": "[a-zA-Z0-9]{8}"
-    },
-    {
-      "name": "MYSQL_DATABASE",
-      "description": "database name",
-      "generate": "expression",
-      "from": "[a-zA-Z0-9]{20}"
-    },
-	{
-      "name": "MYSQL_SERVICE_HOST",
-	  "description": "database host"
-    },
-	{
-      "name": "MYSQL_SERVICE_PORT",
-	  "description": "database port"
     },
 	{
       "name": "GITHUB_WEBHOOK_SECRET",
