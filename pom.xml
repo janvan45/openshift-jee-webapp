@@ -10,6 +10,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <maven.compiler.source>1.7</maven.compiler.source>
       <maven.compiler.target>1.7</maven.compiler.target>
+      <nexus.url>http://dns.elca.local:8081/nexus/content</nexus.url>
       <pj.version>${project.version}</pj.version>
    </properties>
    <dependencies>
@@ -25,14 +26,14 @@
       <repository>
   	 <id>nexus</id>
          <name>Releases</name>
-  	 <url>http://dns.elca.local:8081/nexus/content/repositories/releases</url>
+  	 <url>${nexus.url}/repositories/releases</url>
       </repository>
 
       <!-- Publish the versioned releases here -->
       <snapshotRepository>
   	 <id>nexus</id>
   	 <name>Snapshots</name>
-  	 <url>http://dns.elca.local:8081/nexus/content/repositories/snapshots</url>
+  	 <url>${nexus.url}/repositories/snapshots</url>
       </snapshotRepository>
    </distributionManagement>
 
@@ -41,7 +42,7 @@
       <repository>
        	 <id>nexus</id>
 	 <name> Repositories</name>
-         <url>http://dns.elca.local:8081/nexus/content/groups/public</url>
+         <url>${nexus.url}/groups/public</url>
          <snapshots>
             <enabled>true</enabled>
             <updatePolicy>always</updatePolicy>
@@ -52,14 +53,22 @@
    <build>
       <finalName>Sample JEE Webapp</finalName>
       <plugins>
+         <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.5.1</version>
+            <configuration>
+               <source>1.7</source>
+               <target>1.7</target>
+            </configuration>
+         </plugin>
+
+         <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <version>2.3</version>
             <configuration>
-               <failOnMissingWebXml>false</failOnMissingWebXml>
-               <outputDirectory>target</outputDirectory>
-               <warName>ROOT</warName>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
             </configuration>
          </plugin>
          <plugin>
