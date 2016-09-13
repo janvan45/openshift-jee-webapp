@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
    <modelVersion>4.0.0</modelVersion>
    <groupId>hcmut.edu.vn</groupId>
-   <artifactId>sample</artifactId>
-   <version>1.0.0</version>
+   <artifactId>webapp</artifactId>
+   <version>1.0</version>
    <packaging>war</packaging>
    <name>SampleApp</name>
    <properties>
@@ -19,15 +19,38 @@
          <version>11.2.0.3</version>
       </dependency>
    </dependencies>
-   <!-- For license, Maven can't download ojdbc6.jar from its repository -->
+
+   <distributionManagement>
+      <!-- Publish the versioned releases here -->
+      <repository>
+  	 <id>nexus</id>
+         <name>Releases</name>
+  	 <url>http://dns.elca.local:8081/nexus/content/repositories/releases</url>
+      </repository>
+
+      <!-- Publish the versioned releases here -->
+      <snapshotRepository>
+  	 <id>nexus</id>
+  	 <name>Snapshots</name>
+  	 <url>http://dns.elca.local:8081/nexus/content/repositories/snapshots</url>
+      </snapshotRepository>
+   </distributionManagement>
+
+   <!-- download artifacts from this repo -->
    <repositories>
       <repository>
-         <id>codelds</id>
-         <url>https://code.lds.org/nexus/content/groups/main-repo</url>
+       	 <id>nexus</id>
+	 <name> Repositories</name>
+         <url>http://dns.elca.local:8081/nexus/content/groups/public</url>
+         <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+         </snapshots>
       </repository>
    </repositories>
+
    <build>
-      <finalName>Sample App</finalName>
+      <finalName>Sample JEE Webapp</finalName>
       <plugins>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
