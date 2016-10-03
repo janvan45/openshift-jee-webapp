@@ -20,25 +20,25 @@
          <version>11.2.0.3</version>
       </dependency>
    </dependencies>
-
+   
+   <!--
    <distributionManagement>
-      <!-- Publish the versioned releases here -->
       <repository>
   	 <id>nexus</id>
          <name>Releases</name>
   	 <url>${nexus.url}/repositories/releases</url>
       </repository>
 
-      <!-- Publish the versioned releases here -->
       <snapshotRepository>
   	 <id>nexus</id>
   	 <name>Snapshots</name>
   	 <url>${nexus.url}/repositories/snapshots</url>
       </snapshotRepository>
    </distributionManagement>
-
+   -->
    <!-- download artifacts from this repo -->
    <repositories>
+      <!--
       <repository>
        	 <id>nexus</id>
 	 <name> Repositories</name>
@@ -47,6 +47,11 @@
             <enabled>true</enabled>
             <updatePolicy>always</updatePolicy>
          </snapshots>
+      </repository>
+      -->
+      <repository>
+        <id>codelds</id>
+        <url>https://code.lds.org/nexus/content/groups/main-repo</url>
       </repository>
    </repositories>
 
