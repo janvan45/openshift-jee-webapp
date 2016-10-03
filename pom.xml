@@ -5,12 +5,11 @@
    <artifactId>webapp</artifactId>
    <version>1.0</version>
    <packaging>war</packaging>
-   <name>SampleApp</name>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <maven.compiler.source>1.7</maven.compiler.source>
       <maven.compiler.target>1.7</maven.compiler.target>
-      <nexus.url>http://dns.elca.local:8081/nexus/content</nexus.url>
+     <!--  <nexus.url>http://dns.elca.local:8081/nexus/content</nexus.url> -->
       <pj.version>${project.version}</pj.version>
    </properties>
    <dependencies>
@@ -56,7 +55,7 @@
    </repositories>
 
    <build>
-      <finalName>Sample JEE Webapp</finalName>
+      <finalName>webapp-${project.version}</finalName>
       <plugins>
          <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
          <plugin>
@@ -68,7 +67,7 @@
                <target>1.7</target>
             </configuration>
          </plugin>
-
+	 
          <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <version>2.3</version>
@@ -76,6 +75,7 @@
                 <failOnMissingWebXml>false</failOnMissingWebXml>
             </configuration>
          </plugin>
+         
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
